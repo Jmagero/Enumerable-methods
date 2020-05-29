@@ -8,15 +8,17 @@ module Enumerable
       yield my_arr[i]
       i+=1
     end
-
   end
 
-  # def my_each_with_index 
-  #   return unless block_given?
-  #   for i in 0...self.length
-  #     yield self[i], i
-  #   end
-  # end
+  def my_each_with_index 
+    return enum_for unless block_given?
+      my_arr = *self
+      i = 0 
+      while i < my_arr.length
+      yield my_arr[i],i
+      i+=1
+      end
+  end
 
   # def my_select
   #   return unless block_given?
