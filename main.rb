@@ -27,11 +27,21 @@ module Enumerable
     result
   end
 
-  def my_all?
-    return enum_for unless block_given?
-    self.my_select { |x|return false if  yield(x) === false}
-    true   
+  def my_all?(pattern = nil)
+    my_each do |x|
+      if block_given?
+        return false unless yield x
+      elsif pattern.class == Regexp
+        return false unless pattern =~ x
+      elsif pattern.class == Class
+        return false unless x.class == pattern
+      elsif !pattern.nil?
+        return false unless x == pattern
+      else
+        return false unless x
+      end
+    end
+    true
   end
 end
 
-{"name" => "Celyn", "car" => "green"}.my_each{|elem| puts elem}
