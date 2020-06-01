@@ -26,6 +26,12 @@ module Enumerable
     self.my_each{ |x| result << x if yield(x)}
     result
   end
+
+  def my_all?
+    return enum_for unless block_given?
+    self.my_select { |x|return false if  yield(x) === false}
+    true   
+  end
 end
 
 {"name" => "Celyn", "car" => "green"}.my_each{|elem| puts elem}
