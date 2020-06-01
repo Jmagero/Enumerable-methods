@@ -43,5 +43,25 @@ module Enumerable
     end
     true
   end
+
+  def my_any?(pattern = nil)
+    return false if (self - [nil, false]) == []
+    my_each do |x|
+      if block_given?
+        return true if yield x
+      elsif pattern.class == Regexp
+        return true if pattern =~ x
+      elsif pattern.class == Class
+        return true if x.class == pattern
+      elsif !pattern.nil?
+        return true if x == pattern
+      else
+        return true unless x
+      end
+    end
+    return true if pattern.nil? && !block_given?
+
+    false
+  end
 end
 
