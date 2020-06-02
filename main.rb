@@ -68,5 +68,28 @@ module Enumerable
     return length unless block_given?
     my_select { |x| yield x }.length
   end
+
+  
+  def my_inject(*args)
+    dumy = dup.to_a
+    args.reverse! if args.length > 1 && args[1].class != Symbol
+    unless block_given?
+
+      sum = (args.length > 1 ? args.shift : dumy.shift)
+
+      dummy.my_each { |x| sum = sum.send(args[0].to_s, x) }
+      return sum
+    end
+
+    sum = (args.length.positive? ? args[0] : dumy.shift)
+
+    dumy.my_each { |x| sum = yield sum, x }
+    sum
+  end
+end
+
+def multiply_els(arr)
+  arr.my_inject(:*)
+end
 end
 
