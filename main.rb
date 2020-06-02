@@ -1,4 +1,3 @@
-
 module Enumerable
   def my_each
     return enum_for unless  block_given?
@@ -62,6 +61,12 @@ module Enumerable
     return true if pattern.nil? && !block_given?
 
     false
+  end
+
+  def my_count(count = nil)
+    return count if count
+    return length unless block_given?
+    my_select { |x| yield x }.length
   end
 end
 
