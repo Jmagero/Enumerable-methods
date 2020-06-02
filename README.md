@@ -1,7 +1,6 @@
 # project-bubble-sort
 
->In this project, I had to rewrite some  of the most commonly used Ruby Enumerable methods. It involved modifying a Module, practice how to use yields, and procs along with all the previously acquired knowledge.
-
+In this project, I had to rewrite some  of the most commonly used Ruby Enumerable methods. It involved modifying a Module, practice how to use yields, and procs along with all the previously acquired knowledge.
 
 ## Built With
 

@@ -1,4 +1,3 @@
-# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
     return enum_for unless block_given?
@@ -29,6 +28,8 @@ module Enumerable
     my_each { |x| result << x if yield(x) }
     result
   end
+
+  # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   def my_all?(pattern = nil)
     my_each do |x|
@@ -68,6 +69,8 @@ module Enumerable
     false
   end
 
+  # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+
   def my_count(count = nil)
     return count if count
     return length unless block_given?
@@ -96,5 +99,3 @@ module Enumerable
     arr.my_inject(:*)
   end
 end
-
-# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
