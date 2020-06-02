@@ -1,28 +1,32 @@
+# rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
-    return enum_for unless  block_given?
+    return enum_for unless block_given?
+
     my_arr = *self
-    i = 0 
+    i = 0
     while i < my_arr.length
       yield my_arr[i]
-      i+=1
+      i += 1
     end
   end
 
-  def my_each_with_index 
+  def my_each_with_index
     return enum_for unless block_given?
-      my_arr = *self
-      i = 0 
-      while i < my_arr.length
-      yield my_arr[i],i
-      i+=1
-      end
+
+    my_arr = *self
+    i = 0
+    while i < my_arr.length
+      yield my_arr[i], i
+      i += 1
+    end
   end
 
   def my_select
     return enum_for unless block_given?
+
     result = []
-    self.my_each{ |x| result << x if yield(x)}
+    my_each { |x| result << x if yield(x) }
     result
   end
 
@@ -45,6 +49,7 @@ module Enumerable
 
   def my_any?(pattern = nil)
     return false if (self - [nil, false]) == []
+
     my_each do |x|
       if block_given?
         return true if yield x
@@ -66,10 +71,10 @@ module Enumerable
   def my_count(count = nil)
     return count if count
     return length unless block_given?
+
     my_select { |x| yield x }.length
   end
 
-  
   def my_inject(*args)
     dumy = dup.to_a
     args.reverse! if args.length > 1 && args[1].class != Symbol
@@ -86,10 +91,10 @@ module Enumerable
     dumy.my_each { |x| sum = yield sum, x }
     sum
   end
+
+  def multiply_els(arr)
+    arr.my_inject(:*)
+  end
 end
 
-def multiply_els(arr)
-  arr.my_inject(:*)
-end
-end
-
+# rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
