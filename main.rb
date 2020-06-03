@@ -1,4 +1,3 @@
-public
 module Enumerable
   def my_each
     return enum_for unless block_given?
