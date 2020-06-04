@@ -7,6 +7,7 @@ module Enumerable
     while i < my_arr.length
       yield my_arr[i]
       i += 1
+      my_arr
     end
   end
 
