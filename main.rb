@@ -1,4 +1,3 @@
-# enumerable methods
 module Enumerable
   def my_each
     return enum_for unless block_given?
@@ -31,6 +30,8 @@ module Enumerable
     my_each { |x| result << x if yield(x) }
     result
   end
+
+  # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   def my_all?(pattern = nil)
     my_each do |x|
@@ -89,6 +90,8 @@ module Enumerable
     true
   end
 
+  # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+
   def my_count(arg = nil)
     return length if arg.nil? && !block_given?
 
@@ -111,6 +114,8 @@ module Enumerable
     to_a.my_each { |x| arr << (!proc.nil? ? proc.call(x) : yield(x)) }
     arr
   end
+
+  # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   def my_inject(start = nil, arg = nil)
     arr = self
@@ -145,6 +150,8 @@ module Enumerable
     end
     result
   end
+
+  # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   def multiply_els(arr)
     arr.my_inject(:*)
