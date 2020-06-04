@@ -1,3 +1,4 @@
+# enumerable methods
 module Enumerable
   def my_each
     return enum_for unless block_given?
@@ -7,8 +8,8 @@ module Enumerable
     while i < my_arr.length
       yield my_arr[i]
       i += 1
-      my_arr
     end
+    my_arr
   end
 
   def my_each_with_index
@@ -20,6 +21,7 @@ module Enumerable
       yield my_arr[i], i
       i += 1
     end
+    my_arr
   end
 
   def my_select
@@ -29,8 +31,6 @@ module Enumerable
     my_each { |x| result << x if yield(x) }
     result
   end
-
-  # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   def my_all?(pattern = nil)
     my_each do |x|
@@ -70,30 +70,80 @@ module Enumerable
     false
   end
 
-  # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+  def my_none?(pattern = nil)
+    return true if (self - [nil, false]) == [] || length < 2
 
-  def my_count(count = nil)
-    return count if count
-    return length unless block_given?
-
-    my_select { |x| yield x }.length
+    my_each_with_index do |x, i|
+      if block_given?
+        return false if yield x
+      elsif pattern.class == Regexp
+        return false if pattern =~ x
+      elsif pattern.class == Class
+        return false if x.class == pattern
+      elsif !pattern.nil?
+        return false if x == pattern
+      elsif i.positive? && self[i] != self[i - 1]
+        return false
+      end
+    end
+    true
   end
 
-  def my_inject(*args)
-    dumy = dup.to_a
-    args.reverse! if args.length > 1 && args[1].class != Symbol
-    unless block_given?
+  def my_count(arg = nil)
+    return length if arg.nil? && !block_given?
 
-      sum = (args.length > 1 ? args.shift : dumy.shift)
-
-      dummy.my_each { |x| sum = sum.send(args[0].to_s, x) }
-      return sum
+    count = 0
+    my_each do |x|
+      if block_given?
+        count += 1 if yield x
+      elsif x == arg
+        count += 1
+      end
     end
 
-    sum = (args.length.positive? ? args[0] : dumy.shift)
+    count
+  end
 
-    dumy.my_each { |x| sum = yield sum, x }
-    sum
+  def my_map(proc = nil)
+    return to_enum unless block_given?
+
+    arr = []
+    to_a.my_each { |x| arr << (!proc.nil? ? proc.call(x) : yield(x)) }
+    arr
+  end
+
+  def my_inject(start = nil, arg = nil)
+    arr = self
+    if arg == nil? && block_given?
+      result = start
+      arr.my_each do |i|
+        result =
+          if result.nil?
+            i
+          else
+            yield(result, i)
+          end
+      end
+    elsif (start.class != Symbol && arg.nil?) && start.class ==
+                                                 Integer
+      warn "The value #{start} is not a symbol rep"
+      abort
+    elsif start.class == Symbol
+      if start == :+
+        result = arr.my_inject { |i, v| i + v }
+      elsif start == :*
+        result = arr.my_inject { |i, v| i * v }
+      elsif start == :-
+        result = arr.my_inject { |i, v| i - v }
+      elsif start == :/
+        result = arr.my_inject { |i, v| i / v }
+      end
+    elsif start.class == Integer && arg.class == Symbol
+      new_arr = arr.to_a
+      new_arr.unshift(start)
+      result = new_arr.my_inject(arg)
+    end
+    result
   end
 
   def multiply_els(arr)
