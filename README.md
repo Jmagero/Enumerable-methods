@@ -1,4 +1,4 @@
-# project-enumerable
+# project-Enumerable-methods
 
 In this project, I had to rewrite some  of the most commonly used Ruby Enumerable methods. It involved modifying a Module, practice how to use yields, and procs along with all the previously acquired knowledge.
 
