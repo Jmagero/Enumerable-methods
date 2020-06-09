@@ -1,4 +1,3 @@
-# rubocop: disable Style/CaseEquality:
 module Enumerable
   def my_each
     return enum_for unless block_given?
@@ -31,6 +30,8 @@ module Enumerable
     my_each { |x| result << x if yield(x) }
     result
   end
+
+  # rubocop: disable Style/CaseEquality:
 
   def my_all?(args = nil)
     my_each do |i|
@@ -85,6 +86,8 @@ module Enumerable
     counter
   end
 
+  # rubocop: enable Style/CaseEquality:
+
   def my_map(proc = nil)
     return to_enum unless block_given?
 
@@ -135,5 +138,3 @@ module Enumerable
     arr.my_inject(:*)
   end
 end
-
-# rubocop: enable Style/CaseEquality:
