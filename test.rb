@@ -1,4 +1,4 @@
-load 'main.rb'
+# load 'main.rb'
 
 # # TEST CASES FOR ALL METHODS
 # # Test cases for my_each
