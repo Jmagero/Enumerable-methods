@@ -1,4 +1,4 @@
-# enumerable methods
+# rubocop: disable Style/CaseEquality:
 module Enumerable
   def my_each
     return enum_for unless block_given?
@@ -9,7 +9,7 @@ module Enumerable
       yield my_arr[i]
       i += 1
     end
-    my_arr
+    self
   end
 
   def my_each_with_index
@@ -21,7 +21,7 @@ module Enumerable
       yield my_arr[i], i
       i += 1
     end
-    my_arr
+    self
   end
 
   def my_select
@@ -32,80 +32,57 @@ module Enumerable
     result
   end
 
-  # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-
-  def my_all?(pattern = nil)
-    my_each do |x|
+  def my_all?(args = nil)
+    my_each do |i|
       if block_given?
-        return false unless yield x
-      elsif pattern.class == Regexp
-        return false unless pattern =~ x
-      elsif pattern.class == Class
-        return false unless x.class == pattern
-      elsif !pattern.nil?
-        return false unless x == pattern
+        return false unless yield(i)
+      elsif args.nil?
+        return false unless i
       else
-        return false unless x
+        return false unless args === i
       end
     end
     true
   end
 
-  def my_any?(pattern = nil)
-    return false if (self - [nil, false]) == []
-
+  def my_any?(args = nil)
     my_each do |x|
       if block_given?
-        return true if yield x
-      elsif pattern.class == Regexp
-        return true if pattern =~ x
-      elsif pattern.class == Class
-        return true if x.class == pattern
-      elsif !pattern.nil?
-        return true if x == pattern
-      else
-        return true unless x
+        return true if yield(x)
+      elsif args.nil?
+        return true if x === args
+      elsif x
+        return true
       end
     end
-    return true if pattern.nil? && !block_given?
-
     false
   end
 
-  def my_none?(pattern = nil)
-    return true if (self - [nil, false]) == [] || length < 2
-
-    my_each_with_index do |x, i|
+  def my_none?(args = nil)
+    my_each do |x|
       if block_given?
         return false if yield x
-      elsif pattern.class == Regexp
-        return false if pattern =~ x
-      elsif pattern.class == Class
-        return false if x.class == pattern
-      elsif !pattern.nil?
-        return false if x == pattern
-      elsif i.positive? && self[i] != self[i - 1]
-        return false
+      elsif args.nil?
+        return false if x
+      elsif args === x
+        my_each { |_x| return false }
       end
     end
     true
   end
 
-  # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-
-  def my_count(arg = nil)
-    return length if arg.nil? && !block_given?
-
-    count = 0
-    my_each do |x|
+  def my_count(args = nil)
+    counter = 0
+    my_each do |i|
       if block_given?
-        count += 1 if yield x
-      elsif x == arg
-        count += 1
+        counter += 1 if yield(i)
+      elsif !args.nil?
+        counter += 1 if i === args
+      elsif i
+        counter += 1
       end
     end
-
-    count
+    counter
   end
 
   def my_map(proc = nil)
@@ -158,3 +135,5 @@ module Enumerable
     arr.my_inject(:*)
   end
 end
+
+# rubocop: enable Style/CaseEquality:
