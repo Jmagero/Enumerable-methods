@@ -51,8 +51,8 @@ module Enumerable
       if block_given?
         return true if yield(x)
       elsif args.nil?
-        return true if x === args
-      elsif x
+        return true if x
+      elsif args === x
         return true
       end
     end
@@ -96,45 +96,29 @@ module Enumerable
     arr
   end
 
-  # rubocop: disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-
-  def my_inject(start = nil, arg = nil)
-    arr = self
-    if arg == nil? && block_given?
-      result = start
-      arr.my_each do |i|
-        result =
-          if result.nil?
-            i
-          else
-            yield(result, i)
-          end
-      end
-    elsif (start.class != Symbol && arg.nil?) && start.class ==
-                                                 Integer
-      warn "The value #{start} is not a symbol rep"
-      abort
-    elsif start.class == Symbol
-      if start == :+
-        result = arr.my_inject { |i, v| i + v }
-      elsif start == :*
-        result = arr.my_inject { |i, v| i * v }
-      elsif start == :-
-        result = arr.my_inject { |i, v| i - v }
-      elsif start == :/
-        result = arr.my_inject { |i, v| i / v }
-      end
-    elsif start.class == Integer && arg.class == Symbol
-      new_arr = arr.to_a
-      new_arr.unshift(start)
-      result = new_arr.my_inject(arg)
+  def my_inject(initial_arg = nil, symbol = nil)
+    array = to_a
+    n = array.length
+    if initial_arg.nil?
+      result = array[0]
+      array[1..n - 1].my_each { |x| result = yield(result, x) }
+    elsif block_given?
+      result = initial_arg
+      array.my_each { |x| result = yield(result, x) }
+    elsif initial_arg && symbol
+      result = initial_arg
+      array.my_each { |x| result = result.send(symbol, x) }
+    elsif initial_arg.is_a? Integer
+      result = initial_arg
+      array.my_each { |x| result += x }
+    else
+      result = array[0]
+      array[1..n - 1].my_each { |x| result = result.send(initial_arg, x) }
     end
     result
   end
 
-  # rubocop: enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-
   def multiply_els(arr)
-    arr.my_inject(:*)
+    arr.my_inject { |product, x| product * x }
   end
 end
