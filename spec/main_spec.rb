@@ -14,4 +14,15 @@ describe Enumerable do
     end
   end
 
+  describe 'my_each_with_index' do
+    it 'Should return enumerator' do
+      expect(arr.my_each_with_index).to be_an Enumerator
+    end
+  
+    it 'Should accept a block' do
+      index = []
+      arr.my_each_with_index{|x, i| index << i}
+      expect(index).to eql([0,1,2,3])
+end
+
 end
