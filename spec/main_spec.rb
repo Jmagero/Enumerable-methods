@@ -31,5 +31,22 @@ describe Enumerable do
       expect(arr.my_select{|x| x>2}).to eql([3,4])
     end
   end
+
+  describe 'my_all?' do
+    it 'Should accept a block' do
+      expect(arr.my_all?{|x| x > 2}).to eql(false)
+    end
+
+    regex = %w[dog door rod blade]
+    it 'Should accept a Regex' do
+      expect(regex.my_all?(/d/)).to eql(true)
+    end
+
+    it 'Should check for nil' do
+      expect(arr.my_all?).to eql(true)
+    end
+
+  end
+
 end
 

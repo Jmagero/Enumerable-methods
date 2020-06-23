@@ -66,7 +66,7 @@ module Enumerable
       elsif args.nil?
         return false if x
       elsif args === x
-        my_each { |_x| return false }
+         return false 
       end
     end
     true
