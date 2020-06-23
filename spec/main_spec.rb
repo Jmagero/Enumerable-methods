@@ -23,6 +23,13 @@ describe Enumerable do
       index = []
       arr.my_each_with_index{|x, i| index << i}
       expect(index).to eql([0,1,2,3])
+    end
+  end
+  
+  describe 'my_select' do
+    it 'Should accept a block' do
+      expect(arr.my_select{|x| x>2}).to eql([3,4])
+    end
+  end
 end
 
-end
