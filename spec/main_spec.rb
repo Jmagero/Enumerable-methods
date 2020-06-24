@@ -141,5 +141,13 @@ describe Enumerable do
       expect(arr.my_count(3)).to eql(1)
     end
   end
+  describe 'my_map' do
+    it 'Should return enumerator if no block' do
+      expect(arr.my_map).to be_an Enumerator
+    end
+    it 'Should return a new array by running the block on the old one' do
+      expect(arr.my_map{|x| x * 2}).to eql([2,4,6,8])
+    end
+  end
 end
 
