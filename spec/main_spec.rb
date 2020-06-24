@@ -10,7 +10,7 @@ describe Enumerable do
 
   describe '#my_each' do
     it 'Should return enumerator' do
-    expect(arr.my_each).to be_an Enumerator
+      expect(arr.my_each).to be_an Enumerator
     end
 
     it 'Should accept a block' do
@@ -19,7 +19,7 @@ describe Enumerable do
 
     it 'Should work on ranges' do
       expect(range.my_each { |x| x }).to eql(range)
-  end
+    end
 
     it 'Should work on hashes' do
       expect(hash.my_each {}).to eql(hash)
@@ -30,7 +30,7 @@ describe Enumerable do
     it 'Should return enumerator' do
       expect(arr.my_each_with_index).to be_an Enumerator
     end
-  
+
     it 'Should accept a block' do
       index = []
       arr.my_each_with_index { |_, i| index << i }
@@ -39,8 +39,8 @@ describe Enumerable do
 
     it 'Should work on ranges' do
       expect(range.my_each { |x| x }).to eql(range)
-  end
-  
+    end
+
     it 'Should work on hashes' do
       expect(hash.my_each {}).to eql(hash)
     end
@@ -81,11 +81,11 @@ describe Enumerable do
   describe 'my_any?' do
     it 'Should accept a block' do
       expect(arr.my_any? { |x| x > 2 }).to eql(true)
-  end
+    end
 
     it 'Should accept a Regex' do
       expect(wordarray.my_any?(/oo/)).to eql(true)
-end
+    end
 
     it 'Should accept a class as the first argument' do
       expect(mixedarray.my_any?(Numeric)).to eql(true)
@@ -104,3 +104,29 @@ end
     end
   end
 
+  describe 'my_none?' do
+    it 'Should accept a block' do
+      expect(arr.my_none? { |x| x > 3 }).to eql(false)
+    end
+
+    it 'Should accept a Regex' do
+      expect(wordarray.my_none?(/fajskdfjlasdfl/)).to eql(true)
+    end
+
+    it 'Should accept a class as the first argument' do
+      expect(mixedarray.my_none?(Numeric)).to eql(false)
+    end
+
+    it 'Should work without a block and check if all the values are falsy' do
+      expect(falsyarray.my_none?).to eql(true)
+    end
+
+    it 'Should return true if the block returns false for all the values' do
+      expect(arr.my_none? { |x| x > 10 }).to eql(true)
+    end
+
+    it 'Should return false if the block returns true for at least one of the values' do
+      expect(arr.my_none? { |x| x == 3 }).to eql(false)
+    end
+  end
+end
