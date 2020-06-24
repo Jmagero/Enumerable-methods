@@ -132,7 +132,7 @@ describe Enumerable do
 
   describe 'my_count' do
     it 'Should accept a block' do
-      expect(arr.my_count{|x| x ==3}).to eql(1)
+      expect(arr.my_count { |x| x == 3 }).to eql(1)
     end
     it 'Should return count of the truthy values in the list when block is not provided' do
       expect(arr.my_count).to eql(4)
@@ -147,7 +147,7 @@ describe Enumerable do
       expect(arr.my_map).to be_an Enumerator
     end
     it 'Should return a new array by running the block on the old one' do
-      expect(arr.my_map{|x| x * 2}).to eql([2,4,6,8])
+      expect(arr.my_map { |x| x * 2 }).to eql([2, 4, 6, 8])
     end
   end
 
@@ -156,10 +156,10 @@ describe Enumerable do
       expect(range.my_inject(:+)).to eql(15)
     end
     it 'Should accept a block' do
-      expect(range.my_inject{|sum, n| sum + n}).to eql(15)
+      expect(range.my_inject { |sum, n| sum + n }).to eql(15)
     end
     it 'Should accept initial value as first argument' do
-      expect(range.my_inject(1,:*)).to eql(120)
+      expect(range.my_inject(1, :*)).to eql(120)
     end
   end
 
@@ -169,4 +169,3 @@ describe Enumerable do
     end
   end
 end
-
