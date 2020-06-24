@@ -149,5 +149,16 @@ describe Enumerable do
       expect(arr.my_map{|x| x * 2}).to eql([2,4,6,8])
     end
   end
+  describe 'my_inject' do
+    it 'Should accept symbols' do
+      expect(range.my_inject(:+)).to eql(15)
+    end
+    it 'Should accept a block' do
+      expect(range.my_inject{|sum, n| sum + n}).to eql(15)
+    end
+    it 'Should accept initial value as first argument' do
+      expect(range.my_inject(1,:*)).to eql(120)
+    end
+  end
 end
 
