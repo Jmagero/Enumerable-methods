@@ -141,6 +141,7 @@ describe Enumerable do
       expect(arr.my_count(3)).to eql(1)
     end
   end
+
   describe 'my_map' do
     it 'Should return enumerator if no block' do
       expect(arr.my_map).to be_an Enumerator
@@ -149,6 +150,7 @@ describe Enumerable do
       expect(arr.my_map{|x| x * 2}).to eql([2,4,6,8])
     end
   end
+
   describe 'my_inject' do
     it 'Should accept symbols' do
       expect(range.my_inject(:+)).to eql(15)
@@ -158,6 +160,12 @@ describe Enumerable do
     end
     it 'Should accept initial value as first argument' do
       expect(range.my_inject(1,:*)).to eql(120)
+    end
+  end
+
+  describe '#multiply_els' do
+    it 'Should return result for multiplying array items' do
+      expect(multiply_els(arr)).to eql(24)
     end
   end
 end
