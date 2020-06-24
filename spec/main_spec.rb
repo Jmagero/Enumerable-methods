@@ -129,4 +129,17 @@ describe Enumerable do
       expect(arr.my_none? { |x| x == 3 }).to eql(false)
     end
   end
+
+  describe 'my_count' do
+    it 'Should accept a block' do
+      expect(arr.my_count{|x| x ==3}).to eql(1)
+    end
+    it 'Should return count of the truthy values in the list when block is not provided' do
+      expect(arr.my_count).to eql(4)
+    end
+    it 'Should return count of the elements that match the given argument' do
+      expect(arr.my_count(3)).to eql(1)
+    end
+  end
 end
+
