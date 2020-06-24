@@ -48,24 +48,35 @@ describe Enumerable do
 
   describe 'my_select' do
     it 'Should accept a block' do
-      expect(arr.my_select{|x| x>2}).to eql([3,4])
+      expect(arr.my_select { |x| x > 2 }).to eql([3, 4])
     end
   end
 
   describe 'my_all?' do
     it 'Should accept a block' do
-      expect(arr.my_all?{|x| x > 2}).to eql(false)
+      expect(arr.my_all? { |x| x > 2 }).to eql(false)
     end
 
-    regex = %w[dog door rod blade]
     it 'Should accept a Regex' do
-      expect(regex.my_all?(/d/)).to eql(true)
+      expect(wordarray.my_all?(/d/)).to eql(true)
     end
 
-    it 'Should check for nil' do
+    it 'Should accept a class as the first argument' do
+      expect(wordarray.my_all?(String)).to eql(true)
+    end
+
+    it 'Should work without a block and return true when all values are truthy' do
       expect(arr.my_all?).to eql(true)
     end
 
+    it 'Should return false if the block returns false for one of the values at least' do
+      expect(arr.my_all? { |x| x > 3 }).to eql(false)
+    end
+
+    it 'Should return true if the block returns true for all the values' do
+      expect(arr.my_all? { |x| x > 0 }).to eql(true)
+    end
+  end
   end
 
 end
