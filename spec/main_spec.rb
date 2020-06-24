@@ -77,7 +77,30 @@ describe Enumerable do
       expect(arr.my_all? { |x| x > 0 }).to eql(true)
     end
   end
+
+  describe 'my_any?' do
+    it 'Should accept a block' do
+      expect(arr.my_any? { |x| x > 2 }).to eql(true)
   end
 
+    it 'Should accept a Regex' do
+      expect(wordarray.my_any?(/oo/)).to eql(true)
 end
+
+    it 'Should accept a class as the first argument' do
+      expect(mixedarray.my_any?(Numeric)).to eql(true)
+    end
+
+    it 'Should work without a block and check for at least one truthy value' do
+      expect(mixedarray.my_any?).to eql(true)
+    end
+
+    it 'Should return false if the block returns false for all of the values' do
+      expect(arr.my_any? { |x| x > 10 }).to eql(false)
+    end
+
+    it 'Should return true if the block returns true for at least one of the values' do
+      expect(arr.my_any? { |x| x == 2 }).to eql(true)
+    end
+  end
 
