@@ -1,9 +1,13 @@
 require_relative '../main.rb'
 
-
-
 describe Enumerable do
-  let(:arr){[1,2,3,4]}
+  let(:arr) { [1, 2, 3, 4] }
+  let(:hash) { { a: 'a', b: 'b', c: 'c' } }
+  let(:range) { (1..5) }
+  let(:wordarray) { %w[dog door rod blade] }
+  let(:mixedarray) { [1, nil, 'test', []] }
+  let(:falsyarray) { [nil, false, nil] }
+
   describe '#my_each' do
     it 'Should return enumerator' do
     expect(arr.my_each).to be_an Enumerator
