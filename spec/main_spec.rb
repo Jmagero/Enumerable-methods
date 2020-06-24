@@ -33,11 +33,19 @@ describe Enumerable do
   
     it 'Should accept a block' do
       index = []
-      arr.my_each_with_index{|x, i| index << i}
-      expect(index).to eql([0,1,2,3])
+      arr.my_each_with_index { |_, i| index << i }
+      expect(index).to eql([0, 1, 2, 3])
     end
+
+    it 'Should work on ranges' do
+      expect(range.my_each { |x| x }).to eql(range)
   end
   
+    it 'Should work on hashes' do
+      expect(hash.my_each {}).to eql(hash)
+    end
+  end
+
   describe 'my_select' do
     it 'Should accept a block' do
       expect(arr.my_select{|x| x>2}).to eql([3,4])
