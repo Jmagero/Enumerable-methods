@@ -14,7 +14,15 @@ describe Enumerable do
     end
 
     it 'Should accept a block' do
-      expect(arr.my_each{|x| x}).to eql([1,2,3,4])
+      expect(arr.my_each { |x| x }).to eql([1, 2, 3, 4])
+    end
+
+    it 'Should work on ranges' do
+      expect(range.my_each { |x| x }).to eql(range)
+  end
+
+    it 'Should work on hashes' do
+      expect(hash.my_each {}).to eql(hash)
     end
   end
 
